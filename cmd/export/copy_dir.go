@@ -14,24 +14,24 @@ type copyInfo struct {
 
 func copyDir(src, dst string, excludes []string) error {
 	// Sweep for sources and targets
-	var infos []copyInfo
-	err := filepath.WalkDir(src, func(source string, entry fs.DirEntry, err error) error {
+	var cpInfos []copyInfo
+	err := filepath.Walk(src, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
-		if entry.IsDir() {
+		if info.IsDir() {
 			return nil
 		}
 		for _, exclude := range excludes {
-			if source == exclude {
+			if path == exclude {
 				return nil
 			}
 		}
-		info := copyInfo{
-			source: source,
-			target: filepath.Join(dst, filepath.Base(source)),
+		cpInfo := copyInfo{
+			source: path,
+			target: filepath.Join(dst, filepath.Base(path)),
 		}
-		infos = append(infos, info)
+		cpInfos = append(cpInfos, cpInfo)
 		return nil
 	})
 	if err != nil {
@@ -39,17 +39,17 @@ func copyDir(src, dst string, excludes []string) error {
 	}
 
 	// Copy sources to targets
-	for _, info := range infos {
-		if dir := filepath.Dir(info.target); dir != "." {
+	for _, cpInfo := range cpInfos {
+		if dir := filepath.Dir(cpInfo.target); dir != "." {
 			if err := os.MkdirAll(dir, MODE_DIR); err != nil {
 				return err
 			}
 		}
-		source, err := os.Open(info.source)
+		source, err := os.Open(cpInfo.source)
 		if err != nil {
 			return err
 		}
-		target, err := os.Create(info.target)
+		target, err := os.Create(cpInfo.target)
 		if err != nil {
 			return err
 		}
