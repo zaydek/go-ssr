@@ -83,17 +83,17 @@ func Run() {
 		defer observe(w, r)()
 		fmt.Fprintf(w, `<!DOCTYPE html>
 <html>
-	<head>
-		`+Head{
+  <head>
+    `+Head{
 			Title:       "Hello, world! (/)",
 			Description: "Welcome to my wonderful site.",
 		}.String()+`
-	</head>
-	<body>
-		<h1>Hello, world! (/)</h1>
-		<script src="net/vendor.js"></script>
-		<script src="net/client.js"></script>
-	</body>
+  </head>
+  <body>
+    <h1>Hello, world! (/)</h1>
+    <script src="net/vendor.js"></script>
+    <script src="net/client.js"></script>
+  </body>
 </html>
 `)
 	})
@@ -102,17 +102,17 @@ func Run() {
 		defer observe(w, r)()
 		fmt.Fprintf(w, `<!DOCTYPE html>
 <html>
-	<head>
-		`+Head{
+  <head>
+    `+Head{
 			Title:       "Hello, world! (/pokemon/)",
 			Description: "Welcome to my wonderful site.",
 		}.String()+`
-	</head>
-	<body>
-		<h1>Hello, world! (/pokemon/)</h1>
-		<script src="net/vendor.js"></script>
-		<script src="net/client.js"></script>
-	</body>
+  </head>
+  <body>
+    <h1>Hello, world! (/pokemon/)</h1>
+    <script src="net/vendor.js"></script>
+    <script src="net/client.js"></script>
+  </body>
 </html>
 `)
 	})
@@ -121,17 +121,17 @@ func Run() {
 		defer observe(w, r)()
 		fmt.Fprintf(w, `<!DOCTYPE html>
 <html>
-	<head>
-		`+Head{
+  <head>
+    `+Head{
 			Title:       "Hello, world! (/nested/pokemon/)",
 			Description: "Welcome to my wonderful site.",
 		}.String()+`
-	</head>
-	<body>
-		<h1>Hello, world! (/nested/pokemon/)</h1>
-		<script src="net/vendor.js"></script>
-		<script src="net/client.js"></script>
-	</body>
+  </head>
+  <body>
+    <h1>Hello, world! (/nested/pokemon/)</h1>
+    <script src="net/vendor.js"></script>
+    <script src="net/client.js"></script>
+  </body>
 </html>
 `)
 	})
