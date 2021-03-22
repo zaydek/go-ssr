@@ -54,6 +54,14 @@ func getFSPath(url string) string {
 	return out
 }
 
+func dimAll(str string) string {
+	arr := strings.Split(str, "\n")
+	for x, v := range arr {
+		arr[x] = terminal.Dim(v)
+	}
+	return strings.Join(arr, "\n")
+}
+
 func Run() {
 	if err := os.RemoveAll(EXPORT_DIR); err != nil {
 		panic(err)
@@ -91,7 +99,7 @@ func Run() {
 		}
 
 		res.Body.Close() // Do not defer
-		fmt.Print(terminal.Dim(strings.ReplaceAll(string(bstr), "\t", "  ")))
+		fmt.Print(dimAll(strings.ReplaceAll(string(bstr), "\t", "  ")))
 
 		target := filepath.Join(EXPORT_DIR, getFSPath(res.Request.URL.Path))
 		if err := os.MkdirAll(filepath.Dir(target), MODE_DIR); err != nil {
