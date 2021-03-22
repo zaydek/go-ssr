@@ -91,7 +91,7 @@ func Run() {
 		}
 
 		res.Body.Close() // Do not defer
-		fmt.Print(terminal.Dim(string(bstr)))
+		fmt.Print(terminal.Dim(strings.ReplaceAll(string(bstr), "\t", "  ")))
 
 		target := filepath.Join(EXPORT_DIR, getFSPath(res.Request.URL.Path))
 		if err := os.MkdirAll(filepath.Dir(target), MODE_DIR); err != nil {
