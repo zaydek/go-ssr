@@ -2,20 +2,18 @@ package export
 
 import (
 	"io"
-	"io/fs"
 	"os"
 	"path/filepath"
 )
 
 type copyInfo struct {
-	source string
-	target string
+	source, target string
 }
 
 func copyDir(src, dst string, excludes []string) error {
 	// Sweep for sources and targets
 	var cpInfos []copyInfo
-	err := filepath.Walk(src, func(path string, info fs.FileInfo, err error) error {
+	err := filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
