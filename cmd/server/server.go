@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/zaydek/go-ssr/pkg/pretty"
@@ -27,7 +28,7 @@ type MetaWriter struct {
 
 func (w *MetaWriter) Write(meta string) {
 	if w.buf.Len() > 0 {
-		w.buf.WriteString("\n\t\t")
+		w.buf.WriteString("\n" + strings.Repeat(" ", 4))
 	}
 	w.buf.WriteString(meta)
 }
@@ -38,7 +39,7 @@ func (w *MetaWriter) Writeformat(metaf, v string) {
 	}
 
 	if w.buf.Len() > 0 {
-		w.buf.WriteString("\n\t\t")
+		w.buf.WriteString("\n" + strings.Repeat(" ", 4))
 	}
 	str := fmt.Sprintf(metaf, html.EscapeString(v))
 	w.buf.WriteString(str)
