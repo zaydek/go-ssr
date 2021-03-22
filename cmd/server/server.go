@@ -74,7 +74,7 @@ func (h Head) String() string {
 func observe(w http.ResponseWriter, r *http.Request) func() {
 	start := time.Now()
 	return func() {
-		fmt.Fprintf(os.Stderr, "%s %s %s\n",
+		fmt.Printf("%s %s %s\n",
 			r.Method, r.URL.Path, terminal.Dimf("(%s)", pretty.Duration(time.Since(start))))
 	}
 }
