@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/zaydek/go-ssr/pkg/pretty"
+	"github.com/zaydek/go-ssr/pkg/terminal"
 )
 
 type Head struct {
@@ -50,19 +51,16 @@ func (w MetaWriter) String() string {
 func (h Head) String() string {
 	var meta MetaWriter
 
-	meta.Write(`<!-- Web -->`)
 	meta.Writeformat(`<title>%s</title>`, h.Title)
 	meta.Writeformat(`<meta name="title" content="%s">`, h.Title)
 	meta.Writeformat(`<meta name="description" content="%s">`, h.Description)
 
-	meta.Write(`<!-- og:* -->`)
 	meta.Write(`<meta property="og:type" content="website">`)
 	meta.Writeformat(`<meta property="og:url" content="%s">`, h.URL)
 	meta.Writeformat(`<meta property="og:title" content="%s">`, h.Title)
 	meta.Writeformat(`<meta property="og:description" content="%s">`, h.Description)
 	meta.Writeformat(`<meta property="og:image" content="%s">`, h.ImageURL)
 
-	meta.Write(`<!-- twitter:* -->`)
 	meta.Write(`<meta property="twitter:card" content="summary_large_image">`)
 	meta.Writeformat(`<meta property="twitter:url" content="%s">`, h.URL)
 	meta.Writeformat(`<meta property="twitter:title" content="%s">`, h.Title)
@@ -74,7 +72,10 @@ func (h Head) String() string {
 
 func observe(w http.ResponseWriter, r *http.Request) func() {
 	start := time.Now()
-	return func() { fmt.Printf("%s (%s)\n", r.URL.Path, pretty.Duration(time.Since(start))) }
+	return func() {
+		fmt.Fprintf(os.Stderr, "%s %s %s\n",
+			r.Method, r.URL.Path, terminal.Dimf("(%s)", pretty.Duration(time.Since(start))))
+	}
 }
 
 func Run() {
@@ -90,6 +91,8 @@ func Run() {
 	</head>
 	<body>
 		<h1>Hello, world! (/)</h1>
+		<script src="net/vendor.js"></script>
+		<script src="net/client.js"></script>
 	</body>
 </html>
 `)
@@ -107,6 +110,8 @@ func Run() {
 	</head>
 	<body>
 		<h1>Hello, world! (/pokemon/)</h1>
+		<script src="net/vendor.js"></script>
+		<script src="net/client.js"></script>
 	</body>
 </html>
 `)
@@ -124,6 +129,8 @@ func Run() {
 	</head>
 	<body>
 		<h1>Hello, world! (/nested/pokemon/)</h1>
+		<script src="net/vendor.js"></script>
+		<script src="net/client.js"></script>
 	</body>
 </html>
 `)

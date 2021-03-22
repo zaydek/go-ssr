@@ -21,17 +21,15 @@ const (
 	MODE_FILE = 0644
 )
 
-const EXPORT_DIR = "__export__"
+const (
+	EXPORT_DIR = "__export__"
+)
 
 var pathnames = []string{
 	"/",
 	"/pokemon",
 	"/nested/pokemon",
 	"/404",
-	"/net/client.js",
-	"/net/client.js.map",
-	"/net/vendor.js",
-	"/net/vendor.js.map",
 }
 
 func getBrowserPath(url string) string {
@@ -63,7 +61,13 @@ func dimAll(str string) string {
 }
 
 func Run() {
+	// rm -r __export__
 	if err := os.RemoveAll(EXPORT_DIR); err != nil {
+		panic(err)
+	}
+
+	// cp -r www/net __export__/net
+	if err := copyDir("www/net", filepath.Join(EXPORT_DIR, "net"), nil); err != nil {
 		panic(err)
 	}
 
@@ -107,8 +111,8 @@ func Run() {
 		}
 
 		var buf bytes.Buffer
-		buf.WriteString(fmt.Sprintf("<!-- Rendered in %s -->", pretty.Duration(time.Since(reqStart))))
-		buf.WriteRune('\n')
+		buf.WriteString(fmt.Sprintf("<!-- %s -->", pretty.Duration(time.Since(reqStart))))
+		buf.WriteString("\n")
 		buf.Write(bstr)
 
 		if err := ioutil.WriteFile(target, buf.Bytes(), MODE_FILE); err != nil {
