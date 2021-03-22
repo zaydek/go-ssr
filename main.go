@@ -47,21 +47,21 @@ func (w MetaWriter) String() string {
 func (h Head) String() string {
 	var meta MetaWriter
 
-	// Web
+	meta.Write(`<!-- Web -->`)
 	meta.Write(`<meta charset="utf-8">`)
 	meta.Write(`<meta name="viewport" content="width=device-width, initial-scale=1.0">`)
 	meta.Writeformat(`<title>%s</title>`, h.Title)
 	meta.Writeformat(`<meta name="title" content="%s">`, h.Title)
 	meta.Writeformat(`<meta name="description" content="%s">`, h.Description)
 
-	// og:*
+	meta.Write(`<!-- og:* -->`)
 	meta.Write(`<meta property="og:type" content="website">`)
 	meta.Writeformat(`<meta property="og:url" content="%s">`, h.URL)
 	meta.Writeformat(`<meta property="og:title" content="%s">`, h.Title)
 	meta.Writeformat(`<meta property="og:description" content="%s">`, h.Description)
 	meta.Writeformat(`<meta property="og:image" content="%s">`, h.ImageURL)
 
-	// twitter:*
+	meta.Write(`<!-- twitter:* -->`)
 	meta.Write(`<meta property="twitter:card" content="summary_large_image">`)
 	meta.Writeformat(`<meta property="twitter:url" content="%s">`, h.URL)
 	meta.Writeformat(`<meta property="twitter:title" content="%s">`, h.Title)
@@ -88,9 +88,7 @@ func prettyDur(dur time.Duration) string {
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
-		defer func() {
-			fmt.Printf("%s (%s)\n", r.URL.Path, prettyDur(time.Since(start)))
-		}()
+		defer func() { fmt.Printf("%s (%s)\n", r.URL.Path, prettyDur(time.Since(start))) }()
 
 		head := Head{
 			Title:       "Hello, world! (/)",
@@ -110,9 +108,7 @@ func main() {
 
 	http.HandleFunc("/pokemon/", func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
-		defer func() {
-			fmt.Printf("%s (%s)\n", r.URL.Path, prettyDur(time.Since(start)))
-		}()
+		defer func() { fmt.Printf("%s (%s)\n", r.URL.Path, prettyDur(time.Since(start))) }()
 
 		head := Head{
 			Title:       "Hello, world! (/pokemon/)",
@@ -132,9 +128,7 @@ func main() {
 
 	http.HandleFunc("/nested/pokemon/", func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
-		defer func() {
-			fmt.Printf("%s (%s)\n", r.URL.Path, prettyDur(time.Since(start)))
-		}()
+		defer func() { fmt.Printf("%s (%s)\n", r.URL.Path, prettyDur(time.Since(start))) }()
 
 		head := Head{
 			Title:       "Hello, world! (/nested/pokemon/)",
