@@ -28,6 +28,18 @@ func (w *MetaWriter) Write(arg string) {
 	w.buf.Write([]byte(arg))
 }
 
+func (w *MetaWriter) Writeformat(format, arg string) {
+	if arg == "" {
+		return
+	}
+
+	if w.buf.Len() > 0 {
+		w.buf.Write([]byte("\n\t\t"))
+	}
+	str := fmt.Sprintf(format, html.EscapeString(arg))
+	w.buf.Write([]byte(str))
+}
+
 func (w MetaWriter) String() string {
 	return w.buf.String()
 }
@@ -38,23 +50,23 @@ func (h Head) String() string {
 	// Web
 	meta.Write(`<meta charset="utf-8">`)
 	meta.Write(`<meta name="viewport" content="width=device-width, initial-scale=1.0">`)
-	meta.Write(fmt.Sprintf(`<title>%s</title>`, html.EscapeString(h.Title)))
-	meta.Write(fmt.Sprintf(`<meta name="title" content="%s">`, html.EscapeString(h.Title)))
-	meta.Write(fmt.Sprintf(`<meta name="description" content="%s">`, html.EscapeString(h.Description)))
+	meta.Writeformat(`<title>%s</title>`, h.Title)
+	meta.Writeformat(`<meta name="title" content="%s">`, h.Title)
+	meta.Writeformat(`<meta name="description" content="%s">`, h.Description)
 
 	// og:*
 	meta.Write(`<meta property="og:type" content="website">`)
-	meta.Write(fmt.Sprintf(`<meta property="og:url" content="%s">`, html.EscapeString(h.URL)))
-	meta.Write(fmt.Sprintf(`<meta property="og:title" content="%s">`, html.EscapeString(h.Title)))
-	meta.Write(fmt.Sprintf(`<meta property="og:description" content="%s">`, html.EscapeString(h.Description)))
-	meta.Write(fmt.Sprintf(`<meta property="og:image" content="%s">`, html.EscapeString(h.ImageURL)))
+	meta.Writeformat(`<meta property="og:url" content="%s">`, h.URL)
+	meta.Writeformat(`<meta property="og:title" content="%s">`, h.Title)
+	meta.Writeformat(`<meta property="og:description" content="%s">`, h.Description)
+	meta.Writeformat(`<meta property="og:image" content="%s">`, h.ImageURL)
 
 	// twitter:*
 	meta.Write(`<meta property="twitter:card" content="summary_large_image">`)
-	meta.Write(fmt.Sprintf(`<meta property="twitter:url" content="%s">`, html.EscapeString(h.URL)))
-	meta.Write(fmt.Sprintf(`<meta property="twitter:title" content="%s">`, html.EscapeString(h.Title)))
-	meta.Write(fmt.Sprintf(`<meta property="twitter:description" content="%s">`, html.EscapeString(h.Description)))
-	meta.Write(fmt.Sprintf(`<meta property="twitter:image" content="%s">`, html.EscapeString(h.ImageURL)))
+	meta.Writeformat(`<meta property="twitter:url" content="%s">`, h.URL)
+	meta.Writeformat(`<meta property="twitter:title" content="%s">`, h.Title)
+	meta.Writeformat(`<meta property="twitter:description" content="%s">`, h.Description)
+	meta.Writeformat(`<meta property="twitter:image" content="%s">`, h.ImageURL)
 
 	return meta.String()
 }
